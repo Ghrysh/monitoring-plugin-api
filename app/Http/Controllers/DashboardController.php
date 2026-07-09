@@ -9,9 +9,9 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        $visitorLogs = VisitorLog::latest('visited_at')->paginate(20);
+        $visitorLogs = VisitorLog::latest('updated_at')->paginate(20);
         $totalVisitors = VisitorLog::count();
-        $todayVisitors = VisitorLog::whereDate('visited_at', today())->count();
+        $todayVisitors = VisitorLog::whereDate('date', today())->count();
 
         return view('dashboard', compact('visitorLogs', 'totalVisitors', 'todayVisitors'));
     }

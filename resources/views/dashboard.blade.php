@@ -37,17 +37,27 @@
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @forelse($visitorLogs as $log)
                                     <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ \Carbon\Carbon::parse($log->visited_at)->format('d M Y H:i:s') }}
+                                        <td class="px-6 py-4 text-sm text-gray-500">
+                                            <div>ID Sesi: <span class="font-mono">{{ substr($log->session_id, 0, 8) }}</span></div>
+                                            <div class="text-xs">{{ \Carbon\Carbon::parse($log->date)->format('d M Y') }}</div>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
-                                            {{ $log->page_url ?? '-' }}
+                                        <td class="px-6 py-4 text-sm text-gray-900">
+                                            @if($log->page_journey && is_array($log->page_journey))
+                                                <ul class="list-disc list-inside">
+                                                @foreach($log->page_journey as $journey)
+                                                    <li><span class="font-medium text-indigo-600">{{ $journey['path'] ?? '-' }}</span> <span class="text-xs text-gray-400">({{ $journey['time'] ?? '' }})</span></li>
+                                                @endforeach
+                                                </ul>
+                                            @else
+                                                -
+                                            @endif
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             {{ $log->device ?? 'Unknown' }} - {{ $log->browser ?? 'Unknown' }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $log->city ?? '-' }}, {{ $log->country ?? '-' }}
+                                            {{ $log->city ?? '-' }}, {{ $log->country ?? '-' }}<br>
+                                            <span class="text-xs text-gray-400">IP: {{ $log->ip_address }}</span>
                                         </td>
                                     </tr>
                                 @empty

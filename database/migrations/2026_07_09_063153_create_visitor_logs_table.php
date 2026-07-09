@@ -21,9 +21,9 @@ return new class extends Migration
             $table->string('os')->nullable();
             $table->string('country')->nullable();
             $table->string('city')->nullable();
-            $table->string('page_url')->nullable();
+            $table->json('page_journey')->nullable();
             $table->string('session_id')->nullable();
-            $table->timestamp('visited_at')->nullable();
+            $table->date('date')->nullable();
             $table->timestamps();
         });
     }

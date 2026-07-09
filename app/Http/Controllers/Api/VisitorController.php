@@ -10,7 +10,7 @@ use App\Models\VisitorLog;
 class VisitorController extends Controller
 {
     /**
-     * Authenticate and track a visitor.
+     * Authenticate and track a visitor session journey.
      */
     public function track(Request $request)
     {
@@ -22,31 +22,44 @@ class VisitorController extends Controller
 
         $client = Client::where('license_key', $licenseKey)->first();
 
-        if (!$client) {
-            return response()->json(['error' => 'Invalid License Key'], 401);
+        if (!$client || $client->status !== 'active') {
+            return response()->json(['error' => 'Invalid or inactive License Key'], 403);
         }
 
-        if ($client->status !== 'active') {
-            return response()->json(['error' => 'Subscription is inactive'], 403);
-        }
+        $sessionId = $request->input('session_id');
+        $date = now()->toDateString();
+        $ip = $request->ip();
 
-        // Proceed to log the visitor
-        $log = VisitorLog::create([
-            'client_id' => $client->id,
-            'ip_address' => $request->ip(),
-            'user_agent' => $request->userAgent(),
-            'device' => $request->input('device'),
-            'browser' => $request->input('browser'),
-            'os' => $request->input('os'),
-            'country' => $request->input('country'),
-            'city' => $request->input('city'),
-            'page_url' => $request->input('page_url'),
-            'session_id' => $request->input('session_id'),
-            'visited_at' => now(),
-        ]);
+        // Cari sesi hari ini, atau buat baru
+        $log = VisitorLog::firstOrCreate(
+            ['client_id' => $client->id, 'session_id' => $sessionId, 'date' => $date],
+            [
+                'ip_address' => $ip, 
+                'user_agent' => $request->userAgent(),
+                'device' => $request->input('device'),
+                'browser' => $request->input('browser'),
+                'os' => $request->input('os'),
+                'country' => $request->input('country'),
+                'city' => $request->input('city'),
+                'page_journey' => []
+            ]
+        );
+
+        $path = $request->input('page_url', '/');
+        $journey = $log->page_journey ?? [];
+        
+        $lastVisit = end($journey);
+        if (!$lastVisit || $lastVisit['path'] !== $path) {
+            $journey[] = [
+                'path' => $path, 
+                'time' => now()->format('H:i')
+            ];
+            $log->page_journey = $journey;
+            $log->save();
+        }
 
         return response()->json([
-            'message' => 'Visitor tracked successfully',
+            'message' => 'Visitor journey tracked successfully',
             'status' => 'success'
         ], 200);
     }
