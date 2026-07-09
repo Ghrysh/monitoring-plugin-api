@@ -30,7 +30,6 @@ class VisitorController extends Controller
             return response()->json(['error' => 'Subscription is inactive'], 403);
         }
 
-        // Proceed to log the visitor
         $log = VisitorLog::create([
             'client_id' => $client->id,
             'ip_address' => $request->ip(),
