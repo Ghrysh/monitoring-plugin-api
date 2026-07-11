@@ -7,6 +7,13 @@ use Illuminate\View\View;
 
 class AppLayout extends Component
 {
+    public $isEmbed;
+
+    public function __construct($isEmbed = false)
+    {
+        $this->isEmbed = $isEmbed;
+    }
+
     /**
      * Get the view / contents that represents the component.
      */
