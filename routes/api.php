@@ -9,7 +9,6 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-// Monitoring API endpoints for the Widget
 Route::prefix('v1')->group(function () {
     Route::post('/visitor/track', [VisitorController::class, 'track']);
     Route::post('/license/sync', [LicenseController::class, 'sync']);

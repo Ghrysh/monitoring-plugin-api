@@ -13,6 +13,23 @@ class DashboardController extends Controller
         $totalVisitors = VisitorLog::count();
         $todayVisitors = VisitorLog::whereDate('date', today())->count();
 
-        return view('dashboard', compact('visitorLogs', 'totalVisitors', 'todayVisitors'));
+        $visitorLogs = $query->latest('visited_at')->paginate(20);
+        $totalVisitors = (clone $query)->count();
+
+        $logs = (clone $query)->get();
+        foreach ($logs as $log) {
+            $date = \Carbon\Carbon::parse($log->visited_at);
+            if ($filter === 'month') {
+                $chartData[$date->day]++;
+            } elseif ($filter === 'year') {
+                $chartData[$date->month]++;
+            } else {
+                $chartData[$date->hour]++;
+            }
+        }
+
+        $chartDataValues = array_values($chartData);
+
+        return view('dashboard', compact('visitorLogs', 'totalVisitors', 'chartDataValues', 'labels', 'filter', 'periodLabel'));
     }
 }
