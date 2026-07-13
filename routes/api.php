@@ -11,6 +11,7 @@ Route::get('/user', function (Request $request) {
 
 Route::prefix('v1')->group(function () {
     Route::post('/visitor/track', [VisitorController::class, 'track']);
+    Route::post('/install', [LicenseController::class, 'install']);
     Route::post('/license/sync', [LicenseController::class, 'sync']);
     Route::post('/license/verify', [LicenseController::class, 'verify']);
     Route::post('/verify-license', [LicenseController::class, 'verify']); // Keep for backward compatibility

@@ -74,4 +74,27 @@ class LicenseController extends Controller
             ]
         ], 200);
     }
+
+    public function install(Request $request)
+    {
+        $request->validate([
+            'license_key' => 'required|string'
+        ]);
+
+        $client = Client::where('license_key', $request->license_key)->first();
+        
+        if (!$client) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'License not found'
+            ], 404);
+        }
+
+        $client->update(['is_installed' => true]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Plugin marked as installed successfully'
+        ]);
+    }
 }
