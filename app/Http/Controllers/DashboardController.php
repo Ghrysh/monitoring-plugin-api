@@ -35,7 +35,7 @@ class DashboardController extends Controller
             $query->whereYear('date', now()->year);
         }
 
-        $visitorLogs = (clone $query)->latest('updated_at')->paginate(20, ['*'], 'journey_page');
+        $visitorLogs = (clone $query)->latest('updated_at')->paginate(20, ['*'], 'journey_page')->appends($request->query());
         $totalVisitors = (clone $query)->count();
 
         $chartLabels = [];

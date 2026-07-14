@@ -22,9 +22,9 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             
             <div class="bg-slate-50 inline-flex p-1.5 space-x-1 rounded-xl mb-6">
-                <a href="?filter=today" class="px-5 py-2 rounded-lg text-sm {{ ($filter ?? 'today') === 'today' ? 'bg-white shadow-sm text-blue-custom font-semibold' : 'text-slate-500 hover:text-slate-700 font-medium' }}">Hari Ini</a>
-                <a href="?filter=month" class="px-5 py-2 rounded-lg text-sm {{ ($filter ?? '') === 'month' ? 'bg-white shadow-sm text-blue-custom font-semibold' : 'text-slate-500 hover:text-slate-700 font-medium' }}">Bulan Ini</a>
-                <a href="?filter=year" class="px-5 py-2 rounded-lg text-sm {{ ($filter ?? '') === 'year' ? 'bg-white shadow-sm text-blue-custom font-semibold' : 'text-slate-500 hover:text-slate-700 font-medium' }}">Tahun Ini</a>
+                <a href="{{ request()->fullUrlWithQuery(['filter' => 'today', 'journey_page' => null]) }}" class="px-5 py-2 rounded-lg text-sm {{ ($filter ?? 'today') === 'today' ? 'bg-white shadow-sm text-blue-custom font-semibold' : 'text-slate-500 hover:text-slate-700 font-medium' }}">Hari Ini</a>
+                <a href="{{ request()->fullUrlWithQuery(['filter' => 'month', 'journey_page' => null]) }}" class="px-5 py-2 rounded-lg text-sm {{ ($filter ?? '') === 'month' ? 'bg-white shadow-sm text-blue-custom font-semibold' : 'text-slate-500 hover:text-slate-700 font-medium' }}">Bulan Ini</a>
+                <a href="{{ request()->fullUrlWithQuery(['filter' => 'year', 'journey_page' => null]) }}" class="px-5 py-2 rounded-lg text-sm {{ ($filter ?? '') === 'year' ? 'bg-white shadow-sm text-blue-custom font-semibold' : 'text-slate-500 hover:text-slate-700 font-medium' }}">Tahun Ini</a>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
