@@ -12,26 +12,26 @@
             background-image: linear-gradient(#f0f0f0 1px, transparent 1px), linear-gradient(90deg, #f0f0f0 1px, transparent 1px);
             background-size: 40px 40px;
         }
-        .text-teal-custom { color: #14b8a6; }
-        .bg-teal-light { background-color: #f0fdfa; }
-        .text-indigo-custom { color: #5c6ac4; }
-        .bg-indigo-light { background-color: #f0f4ff; }
+        .text-blue-custom { color: #2563eb; }
+        .bg-blue-light { background-color: #eff6ff; }
+        .text-blue-custom { color: #1d4ed8; }
+        .bg-blue-light { background-color: #eff6ff; }
     </style>
 
     <div x-data="{ showModal: false, activeJourney: null }" class="py-8 grid-bg min-h-screen relative">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             
             <div class="bg-slate-50 inline-flex p-1.5 space-x-1 rounded-xl mb-6">
-                <a href="?filter=today" class="px-5 py-2 rounded-lg text-sm {{ ($filter ?? 'today') === 'today' ? 'bg-white shadow-sm text-teal-custom font-semibold' : 'text-slate-500 hover:text-slate-700 font-medium' }}">Hari Ini</a>
-                <a href="?filter=month" class="px-5 py-2 rounded-lg text-sm {{ ($filter ?? '') === 'month' ? 'bg-white shadow-sm text-teal-custom font-semibold' : 'text-slate-500 hover:text-slate-700 font-medium' }}">Bulan Ini</a>
-                <a href="?filter=year" class="px-5 py-2 rounded-lg text-sm {{ ($filter ?? '') === 'year' ? 'bg-white shadow-sm text-teal-custom font-semibold' : 'text-slate-500 hover:text-slate-700 font-medium' }}">Tahun Ini</a>
+                <a href="?filter=today" class="px-5 py-2 rounded-lg text-sm {{ ($filter ?? 'today') === 'today' ? 'bg-white shadow-sm text-blue-custom font-semibold' : 'text-slate-500 hover:text-slate-700 font-medium' }}">Hari Ini</a>
+                <a href="?filter=month" class="px-5 py-2 rounded-lg text-sm {{ ($filter ?? '') === 'month' ? 'bg-white shadow-sm text-blue-custom font-semibold' : 'text-slate-500 hover:text-slate-700 font-medium' }}">Bulan Ini</a>
+                <a href="?filter=year" class="px-5 py-2 rounded-lg text-sm {{ ($filter ?? '') === 'year' ? 'bg-white shadow-sm text-blue-custom font-semibold' : 'text-slate-500 hover:text-slate-700 font-medium' }}">Tahun Ini</a>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
                 <div class="bg-white shadow-sm rounded-xl p-8 flex flex-col items-center justify-center border border-gray-100">
                     <h3 class="text-base font-bold text-gray-800 uppercase tracking-widest mb-3">Total Pengunjung</h3>
                     <p class="text-6xl font-black text-gray-800 mb-4">{{ $totalVisitors ?? 0 }}</p>
-                    <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold bg-teal-light text-teal-custom">
+                    <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold bg-blue-light text-blue-custom">
                         Sesi Aktif: {{ $periodLabel ?? 'Hari ini' }}
                     </span>
                 </div>
@@ -70,7 +70,7 @@
                                             @if($log->page_journey && is_array($log->page_journey))
                                                 @foreach(array_slice($log->page_journey, 0, 3) as $step)
                                                     <div class="flex items-center gap-1 group relative">
-                                                        <span class="px-2 py-1 bg-indigo-50 border border-indigo-100 text-indigo-700 text-[11px] font-medium rounded shadow-sm truncate max-w-[120px]">
+                                                        <span class="px-2 py-1 bg-blue-50 border border-blue-100 text-blue-700 text-[11px] font-medium rounded shadow-sm truncate max-w-[120px]">
                                                             {{ $step['path'] == '/' ? '/ (Home)' : $step['path'] }}
                                                         </span>
                                                         
@@ -94,11 +94,11 @@
                                         {{ $log->created_at->format('H:i:s') }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        <span class="px-2.5 py-1 bg-teal-50 text-teal-600 rounded-lg text-xs font-bold">{{ $log->updated_at->diffForHumans() }}</span>
+                                        <span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-lg text-xs font-bold">{{ $log->updated_at->diffForHumans() }}</span>
                                     </td>
                                     <td class="px-6 py-4 text-right">
                                         @if($log->page_journey && count($log->page_journey) > 0)
-                                            <button @click="activeJourney = {{ json_encode($log->page_journey) }}; showModal = true" class="text-indigo-600 font-bold text-xs bg-indigo-50 px-3 py-1.5 rounded-lg hover:bg-indigo-100 transition-colors whitespace-nowrap">Lihat Full</button>
+                                            <button @click="activeJourney = {{ json_encode($log->page_journey) }}; showModal = true" class="text-blue-600 font-bold text-xs bg-blue-50 px-3 py-1.5 rounded-lg hover:bg-blue-100 transition-colors whitespace-nowrap">Lihat Full</button>
                                         @endif
                                     </td>
                                 </tr>
@@ -184,18 +184,18 @@
                         <!-- Timeline Content -->
                         <div class="relative pl-6 ml-2" x-show="activeJourney && activeJourney.length > 0">
                             <!-- Vertical Line -->
-                            <div class="absolute top-0 bottom-0 left-[7px] w-px bg-indigo-100"></div>
+                            <div class="absolute top-0 bottom-0 left-[7px] w-px bg-blue-100"></div>
                             
                             <template x-for="(step, index) in activeJourney" :key="index">
                                 <!-- Item -->
                                 <div class="relative pb-2">
                                     <!-- Dot -->
-                                    <div class="absolute w-[9px] h-[9px] bg-indigo-500 rounded-full -left-[23px] top-[18px] ring-4 ring-white"></div>
+                                    <div class="absolute w-[9px] h-[9px] bg-blue-500 rounded-full -left-[23px] top-[18px] ring-4 ring-white"></div>
                                     
                                     <!-- Card -->
                                     <div class="bg-gray-50 rounded-[14px] p-3.5 flex items-center justify-between border border-gray-100">
                                         <div>
-                                            <p class="text-[13px] font-bold text-indigo-600" x-text="step.path === '/' ? '/ (Home)' : step.path"></p>
+                                            <p class="text-[13px] font-bold text-blue-600" x-text="step.path === '/' ? '/ (Home)' : step.path"></p>
                                             <p class="text-[10px] text-gray-400 font-bold mt-1 uppercase tracking-wider" x-text="'Langkah ke-' + (index + 1)"></p>
                                         </div>
                                         <div class="bg-white px-2 py-1 rounded-md border border-gray-100 text-[11px] font-bold text-gray-600 shadow-sm" x-text="step.time"></div>
@@ -227,13 +227,13 @@
                         datasets: [{
                             label: chartData.labelName,
                             data: chartData.values,
-                            borderColor: '#0d9488',
-                            backgroundColor: 'rgba(20, 184, 166, 0.1)',
+                            borderColor: '#2563eb',
+                            backgroundColor: 'rgba(37, 99, 235, 0.1)',
                             borderWidth: 3,
                             fill: true,
                             tension: 0.4,
                             pointBackgroundColor: '#ffffff',
-                            pointBorderColor: '#0d9488',
+                            pointBorderColor: '#2563eb',
                             pointBorderWidth: 2,
                             pointRadius: 4,
                             pointHoverRadius: 6
