@@ -14,6 +14,7 @@ Route::prefix('v1')->group(function () {
     Route::post('/install', [LicenseController::class, 'install']);
     Route::post('/license/sync', [LicenseController::class, 'sync']);
     Route::post('/license/status', [LicenseController::class, 'updateStatus']);
+    Route::post('/license/reset', [LicenseController::class, 'resetData']);
     Route::delete('/license/{key}', [LicenseController::class, 'destroy']);
     Route::post('/license/verify', [LicenseController::class, 'verify']);
     Route::post('/verify-license', [LicenseController::class, 'verify']); // Keep for backward compatibility
