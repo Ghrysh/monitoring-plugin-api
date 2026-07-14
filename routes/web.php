@@ -13,7 +13,9 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
 
 // Embeddable Iframe View
-Route::get('/embed/dashboard', [DashboardController::class, 'embedDashboard'])->name('embed.dashboard');
+Route::get('/embed/dashboard', [DashboardController::class, 'embedDashboard'])
+    ->name('embed.dashboard')
+    ->withoutMiddleware([\Illuminate\Http\Middleware\FrameGuard::class]);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
