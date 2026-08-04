@@ -198,7 +198,7 @@
                                             <p class="text-[13px] font-bold text-blue-600" x-text="step.path === '/' ? '/ (Home)' : step.path"></p>
                                             <p class="text-[10px] text-gray-400 font-bold mt-1 uppercase tracking-wider" x-text="'Langkah ke-' + (index + 1)"></p>
                                         </div>
-                                        <div class="bg-white px-2 py-1 rounded-md border border-gray-100 text-[11px] font-bold text-gray-600 shadow-sm" x-text="step.time"></div>
+                                        <div class="bg-white px-2 py-1 rounded-md border border-gray-100 text-[11px] font-bold text-gray-600 shadow-sm" x-text="window.formatLocalTime(step.time)"></div>
                                     </div>
                                 </div>
                             </template>
@@ -251,6 +251,15 @@
                 });
             }
         });
+
+        window.formatLocalTime = function(timeStr) {
+            if(!timeStr) return '';
+            var parts = timeStr.split(':');
+            if(parts.length < 2) return timeStr;
+            var d = new Date();
+            d.setUTCHours(parseInt(parts[0], 10), parseInt(parts[1], 10), 0, 0);
+            return d.getHours().toString().padStart(2, '0') + ':' + d.getMinutes().toString().padStart(2, '0');
+        };
 
         // Convert timestamp to local timezone (Pisahkan agar tidak error jika Chart.js tidak termuat)
         document.addEventListener('DOMContentLoaded', function() {
