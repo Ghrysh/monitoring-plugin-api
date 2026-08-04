@@ -90,8 +90,8 @@
                                             @endif
                                         </div>
                                     </td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-600 font-medium">
-                                        {{ $log->created_at->format('H:i:s') }}
+                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-600 font-medium local-time" data-timestamp="{{ $log->created_at->toIso8601String() }}">
+                                        {{ $log->created_at->format('H:i') }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         <span class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-lg text-xs font-bold">{{ $log->updated_at->diffForHumans() }}</span>
@@ -250,6 +250,19 @@
                     }
                 });
             }
+        });
+
+        // Convert timestamp to local timezone (Pisahkan agar tidak error jika Chart.js tidak termuat)
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.local-time').forEach(function(el) {
+                var timestamp = el.getAttribute('data-timestamp');
+                if(timestamp) {
+                    var date = new Date(timestamp);
+                    var hours = date.getHours().toString().padStart(2, '0');
+                    var minutes = date.getMinutes().toString().padStart(2, '0');
+                    el.innerText = hours + ':' + minutes;
+                }
+            });
         });
     </script>
 </x-app-layout>
