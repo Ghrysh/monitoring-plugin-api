@@ -27,12 +27,22 @@ class DashboardController extends Controller
         
         $query = VisitorLog::where('client_id', $clientId);
         
+        $periodLabel = 'Hari ini';
+
         if ($filter == 'today') {
             $query->where('date', now()->toDateString());
+            $periodLabel = 'Hari ini';
         } elseif ($filter == 'month') {
             $query->whereMonth('date', now()->month)->whereYear('date', now()->year);
+            $periodLabel = 'Bulan ini';
         } elseif ($filter == 'year') {
             $query->whereYear('date', now()->year);
+            $periodLabel = 'Tahun ini';
+        } elseif ($filter == 'custom' && $request->has('start_date') && $request->has('end_date')) {
+            $startDate = \Carbon\Carbon::parse($request->start_date)->startOfDay();
+            $endDate = \Carbon\Carbon::parse($request->end_date)->endOfDay();
+            $query->whereBetween('date', [$startDate->toDateString(), $endDate->toDateString()]);
+            $periodLabel = $startDate->format('d M Y') . ' - ' . $endDate->format('d M Y');
         }
 
         $visitorLogs = (clone $query)->latest('updated_at')->paginate(20, ['*'], 'journey_page')->appends($request->query());
@@ -108,7 +118,7 @@ class DashboardController extends Controller
 
         $isEmbed = $request->is('embed/*');
 
-        return view('dashboard', compact('visitorLogs', 'totalVisitors', 'chartData', 'filter', 'isEmbed'));
+        return view('dashboard', compact('visitorLogs', 'totalVisitors', 'chartData', 'filter', 'isEmbed', 'periodLabel'));
     }
 
     public function embedDashboard(Request $request)
