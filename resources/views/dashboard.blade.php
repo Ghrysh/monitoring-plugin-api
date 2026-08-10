@@ -5,6 +5,9 @@
         </h2>
     </x-slot>
 
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/airbnb.css">
     <!-- Custom CSS for exact styling -->
     <style>
         .grid-bg {
@@ -21,10 +24,14 @@
     <div x-data="{ showModal: false, activeJourney: null }" class="py-8 grid-bg min-h-screen relative">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             
-            <div class="bg-slate-50 inline-flex p-1.5 space-x-1 rounded-xl mb-6">
+            <div class="bg-slate-50 inline-flex flex-wrap p-1.5 gap-1 rounded-xl mb-6">
                 <a href="{{ request()->fullUrlWithQuery(['filter' => 'today', 'journey_page' => null]) }}" class="px-5 py-2 rounded-lg text-sm {{ ($filter ?? 'today') === 'today' ? 'bg-white shadow-sm text-blue-custom font-semibold' : 'text-slate-500 hover:text-slate-700 font-medium' }}">Hari Ini</a>
                 <a href="{{ request()->fullUrlWithQuery(['filter' => 'month', 'journey_page' => null]) }}" class="px-5 py-2 rounded-lg text-sm {{ ($filter ?? '') === 'month' ? 'bg-white shadow-sm text-blue-custom font-semibold' : 'text-slate-500 hover:text-slate-700 font-medium' }}">Bulan Ini</a>
                 <a href="{{ request()->fullUrlWithQuery(['filter' => 'year', 'journey_page' => null]) }}" class="px-5 py-2 rounded-lg text-sm {{ ($filter ?? '') === 'year' ? 'bg-white shadow-sm text-blue-custom font-semibold' : 'text-slate-500 hover:text-slate-700 font-medium' }}">Tahun Ini</a>
+                <button id="customRangeBtn" class="px-5 py-2 rounded-lg text-sm flex items-center gap-2 {{ ($filter ?? '') === 'custom' ? 'bg-white shadow-sm text-blue-custom font-semibold' : 'text-slate-500 hover:text-slate-700 font-medium' }}">
+                    <i class="ri-calendar-line"></i> Custom Range
+                </button>
+                <input type="text" id="customRangePicker" class="hidden">
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
@@ -271,6 +278,35 @@
                     var minutes = date.getMinutes().toString().padStart(2, '0');
                     el.innerText = hours + ':' + minutes;
                 }
+            });
+        });
+    </script>
+    
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            flatpickr("#customRangePicker", {
+                mode: "range",
+                maxDate: "today",
+                dateFormat: "Y-m-d",
+                onClose: function(selectedDates, dateStr, instance) {
+                    if (selectedDates.length === 2) {
+                        let start = instance.formatDate(selectedDates[0], "Y-m-d");
+                        let end = instance.formatDate(selectedDates[1], "Y-m-d");
+                        // Preserve isEmbed behavior
+                        let currentUrl = new URL(window.location.href);
+                        currentUrl.searchParams.set('filter', 'custom');
+                        currentUrl.searchParams.set('start_date', start);
+                        currentUrl.searchParams.set('end_date', end);
+                        currentUrl.searchParams.delete('journey_page');
+                        window.location.href = currentUrl.toString();
+                    }
+                }
+            });
+
+            document.getElementById('customRangeBtn').addEventListener('click', function() {
+                document.getElementById('customRangePicker')._flatpickr.open();
             });
         });
     </script>
