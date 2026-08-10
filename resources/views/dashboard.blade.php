@@ -31,7 +31,7 @@
                 <button id="customRangeBtn" class="px-5 py-2 rounded-lg text-sm flex items-center gap-2 {{ ($filter ?? '') === 'custom' ? 'bg-white shadow-sm text-blue-custom font-semibold' : 'text-slate-500 hover:text-slate-700 font-medium' }}">
                     <i class="ri-calendar-line"></i> Custom Range
                 </button>
-                <input type="text" id="customRangePicker" class="hidden">
+                <input type="text" id="customRangePicker" class="opacity-0 absolute w-0 h-0" style="bottom: 0;">
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
@@ -290,6 +290,7 @@
                 mode: "range",
                 maxDate: "today",
                 dateFormat: "Y-m-d",
+                positionElement: document.getElementById('customRangeBtn'),
                 onClose: function(selectedDates, dateStr, instance) {
                     if (selectedDates.length === 2) {
                         let start = instance.formatDate(selectedDates[0], "Y-m-d");
