@@ -6,8 +6,8 @@
     </x-slot>
 
     <!-- Flatpickr CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/airbnb.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/airbnb.css" crossorigin="anonymous">
     <!-- Custom CSS for exact styling -->
     <style>
         .grid-bg {
@@ -31,7 +31,7 @@
                 <button id="customRangeBtn" class="px-5 py-2 rounded-lg text-sm flex items-center gap-2 {{ ($filter ?? '') === 'custom' ? 'bg-white shadow-sm text-blue-custom font-semibold' : 'text-slate-500 hover:text-slate-700 font-medium' }}">
                     <i class="ri-calendar-line"></i> Custom Range
                 </button>
-                <input type="text" id="customRangePicker" class="opacity-0 absolute w-0 h-0 border-0 p-0 m-0 pointer-events-none">
+                <input type="text" id="customRangePicker" class="hidden">
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
